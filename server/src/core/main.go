@@ -4,10 +4,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"server_logic/server/src/game"
+	"time"
 )
 
 func main() {
+
+	// 加载配置 TODO
 	fmt.Println("数据测试-----start")
+
+	go game.GetManageBanWord().Run()
+
 	play := game.NewTestPlayer()
 
 	play.RecvSetIcon(0)
@@ -21,4 +27,6 @@ func main() {
 		panic(err)
 	}
 	fmt.Println(string(bstr))
+
+	time.Sleep(time.Second * 100)
 }

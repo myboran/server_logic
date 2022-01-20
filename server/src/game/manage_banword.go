@@ -3,6 +3,7 @@ package game
 import (
 	"fmt"
 	"regexp"
+	"time"
 )
 
 // 单例模型 （节省空间）
@@ -39,4 +40,19 @@ func (self *ManageBanWord) IsBanWord(txt string) bool {
 		}
 	}
 	return false
+}
+
+func (self *ManageBanWord) Run() {
+	// 基础词库的更新
+	ticker := time.NewTicker(time.Second * 1)
+	for {
+		select {
+		case <-ticker.C:
+			if time.Now().Unix()%10 == 0 {
+				fmt.Println("更新词库")
+			} else {
+				fmt.Println("待机")
+			}
+		}
+	}
 }
