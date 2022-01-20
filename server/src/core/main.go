@@ -10,4 +10,8 @@ func main() {
 	play := game.NewTestPlayer()
 
 	play.RecvSetIcon(0)
+	play.RecvSetCard(1)
+
+	fmt.Println(play.ModPlayer.Icon)
+	fmt.Println(play.ModPlayer.Card)
 }

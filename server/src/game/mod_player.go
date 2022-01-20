@@ -20,12 +20,24 @@ type ModPlayer struct {
 	IsGM       int
 }
 
-func (self *Player) RecvSetIcon(iconId int) {
-	if !self.ModIcon.IsHasIcon(iconId) {
+//对外接口
+
+// 设置头像
+func (self *ModPlayer) SetIcon(iconId int, player *Player) {
+	if !player.ModIcon.IsHasIcon(iconId) {
 		// 通知客户端，操作非法
 		return
 	}
+	player.ModPlayer.Icon = iconId
+	fmt.Println("当前图标：", player.ModPlayer.Icon)
+}
 
-	self.ModPlayer.Icon = iconId
-	fmt.Println("当前图标：", self.ModPlayer.Icon)
+// 设置名片
+func (self *ModPlayer) SetCard(cardId int, player *Player) {
+	if !player.ModCard.IsHasCard(cardId) {
+		// 通知客户端，操作非法
+		return
+	}
+	player.ModPlayer.Card = cardId
+	fmt.Println("当前名片：", player.ModPlayer.Card)
 }
