@@ -3,6 +3,7 @@ package game
 import (
 	"fmt"
 	"regexp"
+	"server_logic/server/src/csvs"
 	"time"
 )
 
@@ -17,7 +18,6 @@ type ManageBanWord struct {
 func GetManageBanWord() *ManageBanWord {
 	if manageBanWord == nil {
 		manageBanWord = new(ManageBanWord)
-		manageBanWord.BanWordBase = []string{"外挂", "外挂工具"}
 		manageBanWord.BanWordExtra = []string{"原神"}
 	}
 	return manageBanWord
@@ -43,6 +43,7 @@ func (self *ManageBanWord) IsBanWord(txt string) bool {
 }
 
 func (self *ManageBanWord) Run() {
+	self.BanWordBase = csvs.GetBanWordBase()
 	// 基础词库的更新
 	ticker := time.NewTicker(time.Second * 1)
 	for {
