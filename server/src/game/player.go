@@ -9,8 +9,8 @@ type Player struct {
 func NewTestPlayer() *Player {
 	player := new(Player)
 	player.ModPlayer = new(ModPlayer)
-	player.ModIcon = new(ModIcon)
-	player.ModCard = new(ModCard)
+	//player.ModIcon = new(ModIcon)
+	//player.ModCard = new(ModCard)
 	// *******************************
 
 	// *******************************
@@ -24,4 +24,12 @@ func (self *Player) RecvSetIcon(iconId int) {
 
 func (self *Player) RecvSetCard(cardId int) {
 	self.ModPlayer.SetCard(cardId, self)
+}
+
+func (self *Player) RecvSetName(name string) {
+	self.ModPlayer.SetName(name, self)
+}
+
+func (self *Player) RecvSetSign(sign string) {
+	self.ModPlayer.SetSign(sign, self)
 }
