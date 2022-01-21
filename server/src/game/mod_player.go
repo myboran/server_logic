@@ -1,6 +1,9 @@
 package game
 
-import "fmt"
+import (
+	"fmt"
+	"server_logic/server/src/csvs"
+)
 
 type ModPlayer struct {
 	UserId         int
@@ -52,7 +55,7 @@ func (self *ModPlayer) SetName(name string, player *Player) {
 	fmt.Println("当前名字：", player.ModPlayer.Name)
 }
 
-// 设置名字
+// 设置签名
 func (self *ModPlayer) SetSign(sign string, player *Player) {
 
 	if GetManageBanWord().IsBanWord(sign) {
@@ -61,4 +64,29 @@ func (self *ModPlayer) SetSign(sign string, player *Player) {
 
 	player.ModPlayer.Sign = sign
 	fmt.Println("当前签名：", player.ModPlayer.Sign)
+}
+
+func (self *ModPlayer) AddExp(exp int) {
+	self.PlayerExp += exp
+	fmt.Println("当前等级: ", self.PlayerLevel, "当前经验: ", self.PlayerExp)
+	for {
+		config := csvs.GetNowLevelConfig(self.PlayerLevel - 1)
+		if config == nil {
+			break
+		}
+		// 60 级
+		if config.PlayerExp == 0 {
+			break
+		}
+		// 是否完成任务 TODO
+
+		// 升级
+		if self.PlayerExp >= config.PlayerExp {
+			self.PlayerLevel += 1
+			self.PlayerExp -= config.PlayerExp
+			fmt.Println("当前等级: ", self.PlayerLevel, "当前经验: ", self.PlayerExp)
+		} else {
+			break
+		}
+	}
 }

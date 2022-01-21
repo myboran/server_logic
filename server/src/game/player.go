@@ -9,10 +9,10 @@ type Player struct {
 func NewTestPlayer() *Player {
 	player := new(Player)
 	player.ModPlayer = new(ModPlayer)
-	//player.ModIcon = new(ModIcon)
-	//player.ModCard = new(ModCard)
+	player.ModIcon = new(ModIcon)
+	player.ModCard = new(ModCard)
 	// *******************************
-
+	player.ModPlayer.PlayerLevel = 1 // 初始等级为 1 级
 	// *******************************
 	return player
 }

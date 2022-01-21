@@ -18,23 +18,14 @@ func main() {
 
 	go game.GetManageBanWord().Run()
 
-	play := game.NewTestPlayer()
+	playerGM := game.NewTestPlayer()
 
-	play.RecvSetIcon(0)
-	play.RecvSetCard(1)
-	play.RecvSetName("张三")
-	play.RecvSetSign("张三真厉害")
-	play.RecvSetName("张原")
-
-	ticker := time.NewTicker(time.Second * 1)
+	ticker := time.NewTicker(time.Second * 3)
 	for {
 		select {
 		case <-ticker.C:
-			if time.Now().Unix()%3 == 0 {
-				play.RecvSetName("专业代练")
-			} else if time.Now().Unix()%5 == 0 {
-				play.RecvSetName("正常名字")
-			}
+			fmt.Println("加了 2000 经验")
+			playerGM.ModPlayer.AddExp(2000)
 		}
 	}
 
