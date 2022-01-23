@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"server_logic/server/src/csvs"
 	"server_logic/server/src/game"
-	"time"
 )
 
 func main() {
@@ -20,16 +19,18 @@ func main() {
 
 	playerGM := game.NewTestPlayer()
 
-	ticker := time.NewTicker(time.Second * 3)
-	for {
-		select {
-		case <-ticker.C:
-			fmt.Println("加了 2000 经验")
-			playerGM.ModPlayer.AddExp(2000)
-		}
-	}
+	playerGM.ModPlayer.AddExp(10000000)
 
-	//GetInfo(play)
+	//ticker := time.NewTicker(time.Second * 3)
+	//for {
+	//	select {
+	//	case <-ticker.C:
+	//		fmt.Println("加了 2000 经验")
+	//		playerGM.ModPlayer.AddExp(2000)
+	//	}
+	//}
+
+	//GetInfo(playerGM)
 }
 
 func GetInfo(play *game.Player) {
