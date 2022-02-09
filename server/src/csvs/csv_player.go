@@ -14,8 +14,7 @@ var (
 )
 
 func init() {
-	ConfigPlayerLevelSlice = []*ConfigPlayerLevel{}
-	utils.GetCsvUtilMgrSlice("PlayerLevel", &ConfigPlayerLevelSlice)
+	utils.GetCsvUtilMgr().LoadCsv("PlayerLevel", &ConfigPlayerLevelSlice)
 	return
 }
 

@@ -19,7 +19,7 @@ func main() {
 
 	playerGM := game.NewTestPlayer()
 
-	playerGM.ModPlayer.AddExp(10000000)
+	playerGM.ModPlayer.AddExp(10000000, playerGM)
 
 	//ticker := time.NewTicker(time.Second * 3)
 	//for {

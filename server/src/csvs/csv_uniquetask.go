@@ -18,6 +18,6 @@ var (
 
 func init() {
 	ConfigUniqueTaskMap = make(map[int]*ConfigUniqueTask)
-	utils.GetCsvUtilMgr("UniqueTask", &ConfigUniqueTaskMap)
+	utils.GetCsvUtilMgr().LoadCsv("UniqueTask", &ConfigUniqueTaskMap)
 	return
 }

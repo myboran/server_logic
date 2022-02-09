@@ -1,9 +1,16 @@
 package game
 
+const (
+	TASK_STATE_INIT   = 0
+	TASK_STATE_DOING  = 1
+	TASK_STATE_FINISH = 2
+)
+
 type Player struct {
-	ModPlayer *ModPlayer
-	ModIcon   *ModIcon
-	ModCard   *ModCard
+	ModPlayer     *ModPlayer
+	ModIcon       *ModIcon
+	ModCard       *ModCard
+	ModUniqueTask *ModUniqueTask
 }
 
 func NewTestPlayer() *Player {
@@ -11,6 +18,7 @@ func NewTestPlayer() *Player {
 	player.ModPlayer = new(ModPlayer)
 	player.ModIcon = new(ModIcon)
 	player.ModCard = new(ModCard)
+	player.ModUniqueTask = new(ModUniqueTask)
 	// *******************************
 	player.ModPlayer.PlayerLevel = 1 // 初始等级为 1 级
 	// *******************************
