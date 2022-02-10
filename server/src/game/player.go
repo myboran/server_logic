@@ -1,5 +1,7 @@
 package game
 
+import "sync"
+
 const (
 	TASK_STATE_INIT   = 0
 	TASK_STATE_DOING  = 1
@@ -19,6 +21,8 @@ func NewTestPlayer() *Player {
 	player.ModIcon = new(ModIcon)
 	player.ModCard = new(ModCard)
 	player.ModUniqueTask = new(ModUniqueTask)
+	player.ModUniqueTask.MyTaskInfo = make(map[int]*TaskInfo)
+	player.ModUniqueTask.Locker = new(sync.RWMutex)
 	// *******************************
 	player.ModPlayer.PlayerLevel = 1 // 初始等级为 1 级
 	// *******************************

@@ -29,7 +29,8 @@ func main() {
 	//		playerGM.ModPlayer.AddExp(2000)
 	//	}
 	//}
-
+	for {
+	}
 	//GetInfo(playerGM)
 }
 
