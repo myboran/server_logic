@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"server_logic/server/src/csvs"
 	"server_logic/server/src/game"
+	"time"
 )
 
 func main() {
@@ -21,16 +22,18 @@ func main() {
 
 	playerGM.ModPlayer.AddExp(10000000, playerGM)
 
-	//ticker := time.NewTicker(time.Second * 3)
-	//for {
-	//	select {
-	//	case <-ticker.C:
-	//		fmt.Println("加了 2000 经验")
-	//		playerGM.ModPlayer.AddExp(2000)
-	//	}
-	//}
+	ticker := time.NewTicker(time.Second * 1)
 	for {
+		select {
+		case <-ticker.C:
+			if time.Now().Unix()%3 == 0 {
+				playerGM.ReduceWorldLevel()
+			} else if time.Now().Unix()%5 == 0 {
+				playerGM.ReturnWorldLevel()
+			}
+		}
 	}
+
 	//GetInfo(playerGM)
 }
 

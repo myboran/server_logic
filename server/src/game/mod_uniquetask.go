@@ -13,7 +13,8 @@ type ModUniqueTask struct {
 }
 
 func (self *ModUniqueTask) IsTaskFinish(taskId int) bool {
-	if taskId == 10001 || taskId == 10002 {
+	if taskId == 10001 || taskId == 10002 || taskId == 10003 {
+
 		return true
 	}
 

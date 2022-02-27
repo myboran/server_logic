@@ -3,6 +3,7 @@ package game
 import (
 	"fmt"
 	"server_logic/server/src/csvs"
+	"time"
 )
 
 type ModPlayer struct {
@@ -13,8 +14,9 @@ type ModPlayer struct {
 	Sign           string
 	PlayerLevel    int
 	PlayerExp      int
-	WorldLevel     int
-	WorldLevelCool int
+	WorldLevel     int   // 大世界等级
+	WorldLevelNow  int   // 大世界等级(当前)
+	WorldLevelCool int64 // 操作大世界等级冷却时间
 	Birth          int
 	ShowTeam       []int
 	ShowCard       []int
@@ -82,13 +84,54 @@ func (self *ModPlayer) AddExp(exp int, player *Player) {
 		if config.ChapterId > 0 && !player.ModUniqueTask.IsTaskFinish(config.ChapterId) {
 			break
 		}
+
 		// 升级
 		if self.PlayerExp >= config.PlayerExp {
 			self.PlayerLevel += 1
 			self.PlayerExp -= config.PlayerExp
-			fmt.Println("当前等级: ", self.PlayerLevel, "当前经验: ", self.PlayerExp)
+
+			// 升世界等级
+			if self.PlayerLevel >= 25 && self.PlayerLevel%5 == 0 {
+				self.WorldLevelNow += 1
+				self.WorldLevel += 1
+			}
+			fmt.Println("当前等级: ", self.PlayerLevel, "当前经验: ", self.PlayerExp, "当前世界等级: ", self.WorldLevelNow)
 		} else {
 			break
 		}
 	}
+}
+
+func (self *ModPlayer) ReduceWorldLevel(player *Player) {
+	if self.WorldLevel < csvs.REDUCE_WORLD_LEVEL_START {
+		fmt.Println("降低世界等级失败  当前世界等级---", self.WorldLevel)
+		return
+	}
+	if self.WorldLevel-self.WorldLevelNow >= csvs.REDUCE_WORLD_LEVEL_MAX {
+		fmt.Println("降低世界等级失败 当前世界等级: ", self.WorldLevel, "真实世界等级: ", self.WorldLevelNow)
+		return
+	}
+	if time.Now().Unix() < self.WorldLevelCool {
+		fmt.Println("降低世界等级失败 冷却中")
+		return
+	}
+	self.WorldLevelNow -= 1
+	self.WorldLevelCool = time.Now().Unix() + csvs.REDUCE_WORLD_LEVEL_COOL_TIME
+	fmt.Println("降低世界等级成功 当前世界等级: ", self.WorldLevel, "真实世界等级: ", self.WorldLevelNow)
+	return
+}
+
+func (self *ModPlayer) ReturnWorldLevel(player *Player) {
+	if self.WorldLevelNow == self.WorldLevel {
+		fmt.Println("恢复世界等级失败 当前世界等级: ", self.WorldLevel, "真实世界等级: ", self.WorldLevelNow)
+		return
+	}
+	if time.Now().Unix() < self.WorldLevelCool {
+		fmt.Println("恢复世界等级失败 冷却中")
+		return
+	}
+	self.WorldLevelNow += 1
+	self.WorldLevelCool = time.Now().Unix() + csvs.REDUCE_WORLD_LEVEL_COOL_TIME
+	fmt.Println("恢复世界等级成功 当前世界等级: ", self.WorldLevel, "真实世界等级: ", self.WorldLevelNow)
+	return
 }

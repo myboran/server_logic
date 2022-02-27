@@ -1,6 +1,9 @@
 package game
 
-import "sync"
+import (
+	"sync"
+	"time"
+)
 
 const (
 	TASK_STATE_INIT   = 0
@@ -25,6 +28,9 @@ func NewTestPlayer() *Player {
 	player.ModUniqueTask.Locker = new(sync.RWMutex)
 	// *******************************
 	player.ModPlayer.PlayerLevel = 1 // 初始等级为 1 级
+	player.ModPlayer.WorldLevel = 1
+	player.ModPlayer.WorldLevelNow = 1
+	player.ModPlayer.WorldLevelCool = time.Now().Unix()
 	// *******************************
 	return player
 }
@@ -44,4 +50,12 @@ func (self *Player) RecvSetName(name string) {
 
 func (self *Player) RecvSetSign(sign string) {
 	self.ModPlayer.SetSign(sign, self)
+}
+
+func (self *Player) ReduceWorldLevel() {
+	self.ModPlayer.ReduceWorldLevel(self)
+}
+
+func (self *Player) ReturnWorldLevel() {
+	self.ModPlayer.ReturnWorldLevel(self)
 }
