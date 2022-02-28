@@ -28,8 +28,8 @@ type ModPlayer struct {
 	HideShowTeam   int // 隐藏开关
 	ShowCard       []int
 
-	IsProhibit int
-	IsGM       int
+	Prohibit int // 封禁状态
+	IsGM     int // GM账号标志
 }
 
 //对外接口
@@ -195,12 +195,8 @@ func (self *ModPlayer) IsBirthDay() bool {
 }
 
 func (self *ModPlayer) SetShowCard(showCard []int, player *Player) {
-	// 需要验证
-	if len(showCard) > csvs.SHOW_SIZE {
-		fmt.Println("非法操作")
-		return
-	}
 
+	// 需要验证
 	cardExist := make(map[int]int)
 	newList := make([]int, 0)
 	for _, cardId := range showCard {
@@ -220,11 +216,6 @@ func (self *ModPlayer) SetShowCard(showCard []int, player *Player) {
 }
 
 func (self *ModPlayer) SetShowTeam(showTeam []int, player *Player) {
-
-	if len(showTeam) > csvs.SHOW_SIZE {
-		fmt.Println("非法操作")
-		return
-	}
 
 	roleExist := make(map[int]int)
 	newList := make([]*ShowRole, 0)
@@ -249,10 +240,23 @@ func (self *ModPlayer) SetShowTeam(showTeam []int, player *Player) {
 	data, _ := json.Marshal(self.ShowTeam)
 	fmt.Println("展示阵容: ", string(data))
 }
+
 func (self *ModPlayer) SetHideShowTeam(isHide int, player *Player) {
 	if isHide != csvs.LOGIC_TRUE && isHide != csvs.LOGIC_FALSE {
 		fmt.Println("设置隐藏阵容非法")
 		return
 	}
 	self.HideShowTeam = isHide
+}
+
+func (self *ModPlayer) SetProhibit(prohibit int) {
+	self.Prohibit = prohibit
+}
+
+func (self *ModPlayer) SetIsGM(isGM int) {
+	self.IsGM = isGM
+}
+
+func (self *ModPlayer) IsCanEnter() bool {
+	return int64(self.Prohibit) < time.Now().Unix()
 }

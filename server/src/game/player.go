@@ -1,6 +1,8 @@
 package game
 
 import (
+	"fmt"
+	"server_logic/server/src/csvs"
 	"time"
 )
 
@@ -66,13 +68,39 @@ func (self *Player) SetBirth(birth int) {
 }
 
 func (self *Player) SetShowCard(showCard []int) {
+	if len(showCard) > csvs.SHOW_SIZE {
+		fmt.Println("非法操作")
+
+		return
+	}
+
 	self.ModPlayer.SetShowCard(showCard, self)
 }
 
-func (self *Player) SetShowTeam(showRol []int) {
-	self.ModPlayer.SetShowTeam(showRol, self)
+func (self *Player) SetShowTeam(showRole []int) {
+
+	if len(showRole) > csvs.SHOW_SIZE {
+		fmt.Println("非法操作")
+
+		return
+	}
+
+	self.ModPlayer.SetShowTeam(showRole, self)
 }
 
 func (self *Player) SetHideShowTeam(isHide int) {
 	self.ModPlayer.SetHideShowTeam(isHide, self)
+}
+
+func (self *Player) Run() {
+
+	ticker := time.NewTicker(time.Second * 1)
+
+	for {
+		select {
+		case <-ticker.C:
+			fmt.Println(time.Now().Unix())
+		}
+
+	}
 }
