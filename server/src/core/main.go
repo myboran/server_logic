@@ -21,6 +21,9 @@ func main() {
 	playerGM := game.NewTestPlayer()
 
 	playerGM.ModPlayer.AddExp(10000000, playerGM)
+	playerGM.SetBirth(2228)
+	playerGM.SetBirth(228)
+	playerGM.SetBirth(1228)
 
 	ticker := time.NewTicker(time.Second * 1)
 	for {
