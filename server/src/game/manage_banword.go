@@ -40,6 +40,7 @@ func (self *ManageBanWord) IsBanWord(txt string) bool {
 		}
 	}
 	return false
+
 }
 
 func (self *ManageBanWord) Run() {

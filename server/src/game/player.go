@@ -18,11 +18,12 @@ type Player struct {
 	ModCard       *ModCard
 	ModUniqueTask *ModUniqueTask
 	ModRole       *ModRole
+	ModBag        *ModBag
 }
 
 func NewTestPlayer() *Player {
 	player := new(Player)
-	player.ModPlayer = new(ModPlayer)
+
 	player.ModIcon = new(ModIcon)
 	player.ModCard = new(ModCard)
 	player.ModUniqueTask = new(ModUniqueTask)
@@ -30,11 +31,13 @@ func NewTestPlayer() *Player {
 	//player.ModUniqueTask.Locker = new(sync.RWMutex)
 	player.ModRole = new(ModRole)
 	// *******************************
+	player.ModPlayer = new(ModPlayer)
 	player.ModPlayer.PlayerLevel = 1 // 初始等级为 1 级
 	player.ModPlayer.WorldLevel = 1
 	player.ModPlayer.WorldLevelNow = 1
 	player.ModPlayer.WorldLevelCool = time.Now().Unix()
 	// *******************************
+	player.ModBag = new(ModBag)
 	return player
 }
 
