@@ -26,6 +26,7 @@ func main() {
 	playerGM.SetBirth(1228)
 
 	playerGM.SetShowCard([]int{100, 200, 200, 300})
+	playerGM.ModPlayer.SetShowTeam([]int{1001, 1002}, playerGM)
 
 	ticker := time.NewTicker(time.Second * 1)
 	for {

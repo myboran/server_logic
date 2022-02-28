@@ -1,7 +1,5 @@
 package game
 
-import "sync"
-
 type TaskInfo struct {
 	TaskId int
 	State  int
@@ -9,7 +7,7 @@ type TaskInfo struct {
 
 type ModUniqueTask struct {
 	MyTaskInfo map[int]*TaskInfo
-	Locker     *sync.RWMutex
+	//Locker     *sync.RWMutex
 }
 
 func (self *ModUniqueTask) IsTaskFinish(taskId int) bool {

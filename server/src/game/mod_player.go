@@ -1,10 +1,16 @@
 package game
 
 import (
+	"encoding/json"
 	"fmt"
 	"server_logic/server/src/csvs"
 	"time"
 )
+
+type ShowRole struct {
+	RoleId    int
+	RoleLevel int
+}
 
 type ModPlayer struct {
 	UserId         int
@@ -18,7 +24,8 @@ type ModPlayer struct {
 	WorldLevelNow  int   // 大世界等级(当前)
 	WorldLevelCool int64 // 操作大世界等级冷却时间
 	Birth          int
-	ShowTeam       []int
+	ShowTeam       []*ShowRole
+	HideShowTeam   int // 隐藏开关
 	ShowCard       []int
 
 	IsProhibit int
@@ -189,6 +196,11 @@ func (self *ModPlayer) IsBirthDay() bool {
 
 func (self *ModPlayer) SetShowCard(showCard []int, player *Player) {
 	// 需要验证
+	if len(showCard) > csvs.SHOW_SIZE {
+		fmt.Println("非法操作")
+		return
+	}
+
 	cardExist := make(map[int]int)
 	newList := make([]int, 0)
 	for _, cardId := range showCard {
@@ -205,4 +217,42 @@ func (self *ModPlayer) SetShowCard(showCard []int, player *Player) {
 	}
 	self.ShowCard = newList
 	fmt.Println("玩家名片: ", self.ShowCard)
+}
+
+func (self *ModPlayer) SetShowTeam(showTeam []int, player *Player) {
+
+	if len(showTeam) > csvs.SHOW_SIZE {
+		fmt.Println("非法操作")
+		return
+	}
+
+	roleExist := make(map[int]int)
+	newList := make([]*ShowRole, 0)
+	for _, roleId := range showTeam {
+		_, ok := roleExist[roleId]
+		if ok {
+			continue
+		}
+		if !player.ModRole.IsHasRole(roleId) {
+			fmt.Println("没有此角色 id: ", roleId)
+			continue
+		}
+
+		showRole := new(ShowRole)
+		showRole.RoleId = roleId
+		showRole.RoleLevel = player.ModRole.GetRoleLevel(roleId)
+
+		newList = append(newList, showRole)
+		roleExist[roleId] = 1
+	}
+	self.ShowTeam = newList
+	data, _ := json.Marshal(self.ShowTeam)
+	fmt.Println("展示阵容: ", string(data))
+}
+func (self *ModPlayer) SetHideShowTeam(isHide int, player *Player) {
+	if isHide != csvs.LOGIC_TRUE && isHide != csvs.LOGIC_FALSE {
+		fmt.Println("设置隐藏阵容非法")
+		return
+	}
+	self.HideShowTeam = isHide
 }

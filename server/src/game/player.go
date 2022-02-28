@@ -1,7 +1,6 @@
 package game
 
 import (
-	"sync"
 	"time"
 )
 
@@ -16,6 +15,7 @@ type Player struct {
 	ModIcon       *ModIcon
 	ModCard       *ModCard
 	ModUniqueTask *ModUniqueTask
+	ModRole       *ModRole
 }
 
 func NewTestPlayer() *Player {
@@ -25,7 +25,8 @@ func NewTestPlayer() *Player {
 	player.ModCard = new(ModCard)
 	player.ModUniqueTask = new(ModUniqueTask)
 	player.ModUniqueTask.MyTaskInfo = make(map[int]*TaskInfo)
-	player.ModUniqueTask.Locker = new(sync.RWMutex)
+	//player.ModUniqueTask.Locker = new(sync.RWMutex)
+	player.ModRole = new(ModRole)
 	// *******************************
 	player.ModPlayer.PlayerLevel = 1 // 初始等级为 1 级
 	player.ModPlayer.WorldLevel = 1
@@ -66,4 +67,12 @@ func (self *Player) SetBirth(birth int) {
 
 func (self *Player) SetShowCard(showCard []int) {
 	self.ModPlayer.SetShowCard(showCard, self)
+}
+
+func (self *Player) SetShowTeam(showRol []int) {
+	self.ModPlayer.SetShowTeam(showRol, self)
+}
+
+func (self *Player) SetHideShowTeam(isHide int) {
+	self.ModPlayer.SetHideShowTeam(isHide, self)
 }
