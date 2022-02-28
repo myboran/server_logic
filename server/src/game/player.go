@@ -63,3 +63,7 @@ func (self *Player) ReturnWorldLevel() {
 func (self *Player) SetBirth(birth int) {
 	self.ModPlayer.SetBirth(birth, self)
 }
+
+func (self *Player) SetShowCard(showCard []int) {
+	self.ModPlayer.SetShowCard(showCard, self)
+}

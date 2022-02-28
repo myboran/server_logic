@@ -25,6 +25,8 @@ func main() {
 	playerGM.SetBirth(228)
 	playerGM.SetBirth(1228)
 
+	playerGM.SetShowCard([]int{100, 200, 200, 300})
+
 	ticker := time.NewTicker(time.Second * 1)
 	for {
 		select {

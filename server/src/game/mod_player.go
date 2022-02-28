@@ -186,3 +186,23 @@ func (self *ModPlayer) IsBirthDay() bool {
 	}
 	return false
 }
+
+func (self *ModPlayer) SetShowCard(showCard []int, player *Player) {
+	// 需要验证
+	cardExist := make(map[int]int)
+	newList := make([]int, 0)
+	for _, cardId := range showCard {
+		_, ok := cardExist[cardId]
+		if ok {
+			continue
+		}
+		if !player.ModCard.IsHasCard(cardId) {
+			// 通知客户端，操作非法
+			continue
+		}
+		newList = append(newList, cardId)
+		cardExist[cardId] = 1
+	}
+	self.ShowCard = newList
+	fmt.Println("玩家名片: ", self.ShowCard)
+}
