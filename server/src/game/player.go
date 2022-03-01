@@ -42,7 +42,7 @@ func NewTestPlayer() *Player {
 	player.ModPlayer.WorldLevelCool = time.Now().Unix()
 	// *******************************
 	player.ModBag = new(ModBag)
-
+	player.ModBag.BagInfo = make(map[int]*ItemInfo)
 	return player
 }
 
