@@ -42,17 +42,18 @@ func (self *ModPlayer) SetIcon(iconId int, player *Player) {
 		return
 	}
 	player.ModPlayer.Icon = iconId
-	fmt.Println("当前图标：", player.ModPlayer.Icon)
+	fmt.Println("设置图标：", player.ModPlayer.Icon)
 }
 
 // 设置名片
 func (self *ModPlayer) SetCard(cardId int, player *Player) {
 	if !player.ModCard.IsHasCard(cardId) {
 		// 通知客户端，操作非法
+		fmt.Println("当前还没有该头像")
 		return
 	}
 	player.ModPlayer.Card = cardId
-	fmt.Println("当前名片：", player.ModPlayer.Card)
+	fmt.Println("设置名片：", player.ModPlayer.Card)
 }
 
 // 设置名字
@@ -62,7 +63,7 @@ func (self *ModPlayer) SetName(name string, player *Player) {
 		return
 	}
 	player.ModPlayer.Name = name
-	fmt.Println("当前名字：", player.ModPlayer.Name)
+	fmt.Println("设置名字：", player.ModPlayer.Name)
 }
 
 // 设置签名
@@ -73,7 +74,7 @@ func (self *ModPlayer) SetSign(sign string, player *Player) {
 	}
 
 	player.ModPlayer.Sign = sign
-	fmt.Println("当前签名：", player.ModPlayer.Sign)
+	fmt.Println("设置签名：", player.ModPlayer.Sign)
 }
 
 func (self *ModPlayer) AddExp(exp int, player *Player) {

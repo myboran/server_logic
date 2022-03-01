@@ -32,6 +32,7 @@ func (self *ModIcon) AddItem(iconId int) {
 	config := csvs.GetIconConfig(iconId)
 	if config == nil {
 		fmt.Println("非法头像: ", iconId)
+		return
 	}
 
 	self.IconInfo[iconId] = &Icon{

@@ -26,7 +26,10 @@ func NewTestPlayer() *Player {
 
 	player.ModIcon = new(ModIcon)
 	player.ModIcon.IconInfo = make(map[int]*Icon)
+
 	player.ModCard = new(ModCard)
+	player.ModCard.CardInfo = make(map[int]*Card)
+
 	player.ModUniqueTask = new(ModUniqueTask)
 	player.ModUniqueTask.MyTaskInfo = make(map[int]*TaskInfo)
 	//player.ModUniqueTask.Locker = new(sync.RWMutex)
@@ -39,6 +42,7 @@ func NewTestPlayer() *Player {
 	player.ModPlayer.WorldLevelCool = time.Now().Unix()
 	// *******************************
 	player.ModBag = new(ModBag)
+
 	return player
 }
 

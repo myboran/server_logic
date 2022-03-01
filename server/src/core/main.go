@@ -16,13 +16,17 @@ func main() {
 	go game.GetManageBanWord().Run()
 
 	playerGM := game.NewTestPlayer()
+	fmt.Println("---修改头像---")
 	playerGM.ModPlayer.SetIcon(3000001, playerGM)
 	playerGM.ModBag.AddItem(3000001, playerGM)
 	playerGM.ModBag.AddItem(3000002, playerGM)
 	playerGM.ModPlayer.SetIcon(3000001, playerGM)
 	playerGM.ModPlayer.SetIcon(3000002, playerGM)
 	//playerGM.ModBag.AddItem(1000005, playerGM)
-
+	fmt.Println("---修改名片---")
+	playerGM.ModPlayer.SetCard(4000001, playerGM)
+	playerGM.ModBag.AddItem(4000001, playerGM)
+	playerGM.ModPlayer.SetCard(4000001, playerGM)
 	//playerGM.ModPlayer.AddExp(10000000, playerGM)
 	//playerGM.SetBirth(2228)
 	//playerGM.SetBirth(228)
