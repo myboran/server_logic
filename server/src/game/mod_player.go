@@ -38,6 +38,7 @@ type ModPlayer struct {
 func (self *ModPlayer) SetIcon(iconId int, player *Player) {
 	if !player.ModIcon.IsHasIcon(iconId) {
 		// 通知客户端，操作非法
+		fmt.Println("当前还没有该头像")
 		return
 	}
 	player.ModPlayer.Icon = iconId

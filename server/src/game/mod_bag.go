@@ -14,7 +14,7 @@ type ModBag struct {
 	BagInfo map[int]*ItemInfo
 }
 
-func (self *ModBag) AddItem(itemId int) {
+func (self *ModBag) AddItem(itemId int, player *Player) {
 	itemConfig := csvs.GetItemConfig(itemId)
 	if itemConfig == nil {
 		// 不存在的物品
@@ -29,6 +29,8 @@ func (self *ModBag) AddItem(itemId int) {
 		fmt.Println("角色: ", itemConfig.ItemName)
 	case csvs.ITEMTYPE_ICON:
 		fmt.Println("头像: ", itemConfig.ItemName)
+
+		player.ModIcon.AddItem(itemId)
 	case csvs.ITEMTYPE_CARD:
 		fmt.Println("名片: ", itemConfig.ItemName)
 	}

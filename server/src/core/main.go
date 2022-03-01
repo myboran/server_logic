@@ -16,11 +16,13 @@ func main() {
 	go game.GetManageBanWord().Run()
 
 	playerGM := game.NewTestPlayer()
-	playerGM.ModBag.AddItem(1000005)
-	playerGM.ModBag.AddItem(2000005)
-	playerGM.ModBag.AddItem(3000005)
-	playerGM.ModBag.AddItem(4000005)
-	playerGM.ModBag.AddItem(2000085)
+	playerGM.ModPlayer.SetIcon(3000001, playerGM)
+	playerGM.ModBag.AddItem(3000001, playerGM)
+	playerGM.ModBag.AddItem(3000002, playerGM)
+	playerGM.ModPlayer.SetIcon(3000001, playerGM)
+	playerGM.ModPlayer.SetIcon(3000002, playerGM)
+	//playerGM.ModBag.AddItem(1000005, playerGM)
+
 	//playerGM.ModPlayer.AddExp(10000000, playerGM)
 	//playerGM.SetBirth(2228)
 	//playerGM.SetBirth(228)
