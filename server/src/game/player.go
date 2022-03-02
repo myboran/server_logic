@@ -20,6 +20,7 @@ type Player struct {
 	ModUniqueTask *ModUniqueTask
 	ModRole       *ModRole
 	ModBag        *ModBag
+	ModWeapon     *ModWeapon
 }
 
 func NewTestPlayer() *Player {
@@ -46,6 +47,9 @@ func NewTestPlayer() *Player {
 	// *******************************
 	player.ModBag = new(ModBag)
 	player.ModBag.BagInfo = make(map[int]*ItemInfo)
+	// *******************************
+	player.ModWeapon = new(ModWeapon)
+	player.ModWeapon.WeaponInfo = make(map[int]*Weapon)
 	return player
 }
 
@@ -79,7 +83,7 @@ func (self *Player) SetBirth(birth int) {
 }
 
 func (self *Player) SetShowCard(showCard []int) {
-	if len(showCard) > csvs.SHOW_SIZE {
+	if len(showCard) > csvs.ShowSize {
 		fmt.Println("非法操作")
 
 		return
@@ -90,7 +94,7 @@ func (self *Player) SetShowCard(showCard []int) {
 
 func (self *Player) SetShowTeam(showRole []int) {
 
-	if len(showRole) > csvs.SHOW_SIZE {
+	if len(showRole) > csvs.ShowSize {
 		fmt.Println("非法操作")
 
 		return
@@ -104,7 +108,8 @@ func (self *Player) SetHideShowTeam(isHide int) {
 }
 
 func (self *Player) Run() {
-
+	fmt.Println("个人学习作品: MYBORAN")
+	fmt.Println("学习来源:B站 golang大海葵")
 	// 监听动作
 	for {
 		fmt.Println("---------------------------------------------------------------")
@@ -232,10 +237,18 @@ func (self *Player) HandleBagSetIcon() {
 	}
 }
 func (self *Player) HandleBagSetCard() {
-
-}
-func (self *Player) HandleBagSetBirth() {
-
+	fmt.Println("---------------------------------------------------------------")
+	fmt.Println("当前处于基础信息--头像界面,请选择操作：0返回  1查询名片背包  2设置名片")
+	var action int
+	fmt.Scan(&action)
+	switch action {
+	case 0:
+		return
+	case 1:
+		self.HandleBagSetCardGetInfo()
+	case 2:
+		self.HandleBagSetCardSet()
+	}
 }
 
 func (self *Player) HandleBagSetIconGetInfo() {
@@ -256,6 +269,30 @@ func (self *Player) HandleBagSetIconSet() {
 	self.RecvSetIcon(icon)
 }
 
+func (self *Player) HandleBagSetCardGetInfo() {
+	fmt.Println("当前拥有名片如下:")
+	for _, v := range self.ModCard.CardInfo {
+		config := csvs.GetItemConfig(v.CardId)
+		if config != nil {
+			fmt.Println(config.ItemName, ":", config.ItemId)
+		}
+	}
+}
+
+func (self *Player) HandleBagSetCardSet() {
+	fmt.Println("请输入名片id:")
+	var card int
+	fmt.Scan(&card)
+	self.RecvSetCard(card)
+}
+func (self *Player) HandleBagSetBirth() {
+	fmt.Println("---------------------------------------------------------------")
+	fmt.Println("请输入生日:")
+	var day int
+	fmt.Scan(&day)
+	self.SetBirth(day)
+}
+
 func (self *Player) HandleBagAddItem() {
 	itemId := 0
 	itemNum := 0
@@ -271,7 +308,7 @@ func (self *Player) HandleBagShowItem() {
 	data := "您当前有:"
 	for _, v := range self.ModBag.BagInfo {
 		item := csvs.GetItemConfig(v.ItemId)
-		str := item.ItemName + ":" + strconv.Itoa(int(v.ItemNum)) + "个id为" + strconv.Itoa(v.ItemId) + "~"
+		str := "\n" + item.ItemName + ":" + strconv.Itoa(int(v.ItemNum)) + "个   id:" + strconv.Itoa(v.ItemId) + ""
 		data = data + str
 	}
 	fmt.Println(data)

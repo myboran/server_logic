@@ -35,12 +35,14 @@ func (self *ModRole) AddItem(roleId int, num int64, player *Player) {
 				GetTimes: 1,
 			}
 			player.ModIcon.CheckGetIcon(roleId)
+
+			// 友好度在角色成长系统时再增加
 			player.ModCard.CheckGetCard(roleId, 10)
 		} else {
 			// 判定实际获得的东西
 			self.RoleInfo[roleId].GetTimes++
-			if self.RoleInfo[roleId].GetTimes >= csvs.ADD_ROLE_TIME_NORMAL_MIN &&
-				self.RoleInfo[roleId].GetTimes <= csvs.ADD_ROLE_TIME_NORMAL_MAX {
+			if self.RoleInfo[roleId].GetTimes >= csvs.AddRoleTimeNormalMin &&
+				self.RoleInfo[roleId].GetTimes <= csvs.AddRoleTimeNormalMax {
 				player.ModBag.AddItemToBag(itemConfig.Stuff, itemConfig.StuffNum)
 				player.ModBag.AddItemToBag(itemConfig.StuffItem, itemConfig.StuffItemNum)
 			} else {

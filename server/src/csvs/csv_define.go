@@ -1,17 +1,19 @@
 package csvs
 
 const (
-	LOGIC_FALSE = 0
-	LOGIC_TRUE  = 1
+	LogicFalse = 0
+	LogicTrue  = 1
 )
 
 const (
-	REDUCE_WORLD_LEVEL_START     = 5  // 降低世界等级的要求
-	REDUCE_WORLD_LEVEL_MAX       = 1  // 最多能降低多少级
-	REDUCE_WORLD_LEVEL_COOL_TIME = 10 // 冷却时间 s
+	ReduceWorldLevelStart    = 5  // 降低世界等级的要求
+	ReduceWorldLevelMax      = 1  // 最多能降低多少级
+	ReduceWorldLevelCoolTime = 10 // 冷却时间 s
 
-	SHOW_SIZE = 9
+	ShowSize = 9
 
-	ADD_ROLE_TIME_NORMAL_MIN = 2
-	ADD_ROLE_TIME_NORMAL_MAX = 7
+	AddRoleTimeNormalMin = 2
+	AddRoleTimeNormalMax = 7
+
+	WeaponMaxCount = 2000
 )

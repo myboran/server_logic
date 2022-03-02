@@ -113,11 +113,11 @@ func (self *ModPlayer) AddExp(exp int, player *Player) {
 }
 
 func (self *ModPlayer) ReduceWorldLevel(player *Player) {
-	if self.WorldLevel < csvs.REDUCE_WORLD_LEVEL_START {
+	if self.WorldLevel < csvs.ReduceWorldLevelStart {
 		fmt.Println("降低世界等级失败  当前世界等级---", self.WorldLevel)
 		return
 	}
-	if self.WorldLevel-self.WorldLevelNow >= csvs.REDUCE_WORLD_LEVEL_MAX {
+	if self.WorldLevel-self.WorldLevelNow >= csvs.ReduceWorldLevelMax {
 		fmt.Println("降低世界等级失败 当前世界等级: ", self.WorldLevel, "真实世界等级: ", self.WorldLevelNow)
 		return
 	}
@@ -126,7 +126,7 @@ func (self *ModPlayer) ReduceWorldLevel(player *Player) {
 		return
 	}
 	self.WorldLevelNow -= 1
-	self.WorldLevelCool = time.Now().Unix() + csvs.REDUCE_WORLD_LEVEL_COOL_TIME
+	self.WorldLevelCool = time.Now().Unix() + csvs.ReduceWorldLevelCoolTime
 	fmt.Println("降低世界等级成功 当前世界等级: ", self.WorldLevel, "真实世界等级: ", self.WorldLevelNow)
 	return
 }
@@ -141,7 +141,7 @@ func (self *ModPlayer) ReturnWorldLevel(player *Player) {
 		return
 	}
 	self.WorldLevelNow += 1
-	self.WorldLevelCool = time.Now().Unix() + csvs.REDUCE_WORLD_LEVEL_COOL_TIME
+	self.WorldLevelCool = time.Now().Unix() + csvs.ReduceWorldLevelCoolTime
 	fmt.Println("恢复世界等级成功 当前世界等级: ", self.WorldLevel, "真实世界等级: ", self.WorldLevelNow)
 	return
 }
@@ -245,7 +245,7 @@ func (self *ModPlayer) SetShowTeam(showTeam []int, player *Player) {
 }
 
 func (self *ModPlayer) SetHideShowTeam(isHide int, player *Player) {
-	if isHide != csvs.LOGIC_TRUE && isHide != csvs.LOGIC_FALSE {
+	if isHide != csvs.LogicTrue && isHide != csvs.LogicFalse {
 		fmt.Println("设置隐藏阵容非法")
 		return
 	}

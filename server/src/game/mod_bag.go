@@ -27,18 +27,23 @@ func (self *ModBag) AddItem(itemId int, num int64, player *Player) {
 	//	fmt.Println("普通物品: ", itemConfig.ItemName)
 	//
 	//	self.AddItemToBag(itemId, 1)
-	case csvs.ITEMTYPE_ROLE:
+	case csvs.ItemTypeRole:
 		fmt.Println("角色: ", itemConfig.ItemName)
 
 		player.ModRole.AddItem(itemId, num, player)
-	case csvs.ITEMTYPE_ICON:
+	case csvs.ItemTypeIcon:
 		fmt.Println("头像: ", itemConfig.ItemName)
 
 		player.ModIcon.AddItem(itemId)
-	case csvs.ITEMTYPE_CARD:
+	case csvs.ItemTypeCard:
 		fmt.Println("名片: ", itemConfig.ItemName)
 
 		player.ModCard.AddItem(itemId, 9)
+	case csvs.ItemTypeWeapon:
+		fmt.Println("武器: ", itemConfig.ItemName)
+
+		player.ModWeapon.addItem(itemId, num)
+
 	default: // 同普通物品
 		fmt.Println("普通物品: ", itemConfig.ItemName)
 
@@ -68,7 +73,7 @@ func (self *ModBag) RemoveItem(itemId int, num int64, player *Player) {
 	}
 
 	switch itemConfig.SortType {
-	case csvs.ITEMTYPE_NORMAL:
+	case csvs.ItemTypeNormal:
 		fmt.Println("普通物品:", itemConfig.ItemName)
 
 		self.RemoveItemToBag(itemId, num, player)

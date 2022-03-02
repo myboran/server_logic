@@ -3,10 +3,12 @@ package csvs
 import "server_logic/server/utils"
 
 const (
-	ITEMTYPE_NORMAL = 1
-	ITEMTYPE_ROLE   = 2
-	ITEMTYPE_ICON   = 3
-	ITEMTYPE_CARD   = 4
+	ItemTypeNormal = 1
+	ItemTypeRole   = 2
+	ItemTypeIcon   = 3
+	ItemTypeCard   = 4
+
+	ItemTypeWeapon = 6
 )
 
 type ConfigItem struct {
