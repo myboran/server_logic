@@ -55,7 +55,7 @@ func (self *ModBag) AddItemToBag(itemId int, num int64) {
 	}
 }
 
-func (self *ModBag) RemoveItem(itemId int, player *Player) {
+func (self *ModBag) RemoveItem(itemId int, num int64, player *Player) {
 	itemConfig := csvs.GetItemConfig(itemId)
 	if itemConfig == nil {
 		// 不存在的物品
@@ -67,7 +67,7 @@ func (self *ModBag) RemoveItem(itemId int, player *Player) {
 	case csvs.ITEMTYPE_NORMAL:
 		fmt.Println("普通物品:", itemConfig.ItemName)
 
-		self.RemoveItemToBagGM(itemId, 1)
+		self.RemoveItemToBag(itemId, num)
 	default:
 		//self.RemoveItemToBag(itemId, 1)
 	}
@@ -84,4 +84,36 @@ func (self *ModBag) RemoveItemToBagGM(itemId int, num int64) {
 	if config != nil {
 		fmt.Println("减少物品:", config.ItemName, "数量:", num, "总数:", self.BagInfo[itemId].ItemNum)
 	}
+}
+
+func (self *ModBag) RemoveItemToBag(itemId int, num int64) {
+
+	_, ok := self.BagInfo[itemId]
+
+	if ok {
+		if !self.HasEnoughItem(itemId, num) {
+			config := csvs.GetItemConfig(itemId)
+			if config != nil {
+				fmt.Println(config.ItemName, "数量不足, 当前数量: ", self.BagInfo[itemId].ItemNum)
+
+				return
+			}
+		}
+
+		self.BagInfo[itemId].ItemNum -= num
+		config := csvs.GetItemConfig(itemId)
+		if config != nil {
+			fmt.Println("减少物品:", config.ItemName, "数量:", num, "当前数量:", self.BagInfo[itemId].ItemNum)
+
+			return
+		}
+	} else {
+		fmt.Println("没有该商品: ", itemId)
+
+		return
+	}
+}
+
+func (self *ModBag) HasEnoughItem(itemId int, num int64) bool {
+	return self.BagInfo[itemId].ItemNum > num
 }
