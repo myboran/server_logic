@@ -60,6 +60,7 @@ func (self *ModPlayer) SetCard(cardId int, player *Player) {
 func (self *ModPlayer) SetName(name string, player *Player) {
 	// 验证名字是否合法
 	if GetManageBanWord().IsBanWord(name) {
+		fmt.Println("名字非法")
 		return
 	}
 	player.ModPlayer.Name = name

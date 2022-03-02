@@ -7,11 +7,11 @@ type ConfigRole struct {
 	ItemName        string `json:"ItemName"`
 	Star            int    `json:"Star"`
 	Stuff           int    `json:"Stuff"`
-	StuffNum        int    `json:"StuffNum"`
+	StuffNum        int64  `json:"StuffNum"`
 	StuffItem       int    `json:"StuffItem"`
-	StuffItemNum    int    `json:"StuffItemNum"`
+	StuffItemNum    int64  `json:"StuffItemNum"`
 	MaxStuffItem    int    `json:"MaxStuffItem"`
-	MaxStuffItemNum int    `json:"MaxStuffItemNum"`
+	MaxStuffItemNum int64  `json:"MaxStuffItemNum"`
 }
 
 var (

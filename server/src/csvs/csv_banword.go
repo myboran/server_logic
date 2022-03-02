@@ -1,7 +1,5 @@
 package csvs
 
-import "fmt"
-
 type ConfigBanWord struct {
 	Id  int
 	Txt string
@@ -18,7 +16,6 @@ func init() {
 		&ConfigBanWord{Id: 5, Txt: "赚钱"},
 	)
 
-	fmt.Println("csv_banword初始化")
 }
 
 func GetBanWordBase() []string {

@@ -14,7 +14,7 @@ type ModBag struct {
 	BagInfo map[int]*ItemInfo
 }
 
-func (self *ModBag) AddItem(itemId int, player *Player) {
+func (self *ModBag) AddItem(itemId int, num int64, player *Player) {
 	itemConfig := csvs.GetItemConfig(itemId)
 	if itemConfig == nil {
 		// 不存在的物品
@@ -30,7 +30,7 @@ func (self *ModBag) AddItem(itemId int, player *Player) {
 	case csvs.ITEMTYPE_ROLE:
 		fmt.Println("角色: ", itemConfig.ItemName)
 
-		player.ModRole.AddItem(itemId, 1)
+		player.ModRole.AddItem(itemId, num, player)
 	case csvs.ITEMTYPE_ICON:
 		fmt.Println("头像: ", itemConfig.ItemName)
 
@@ -42,7 +42,7 @@ func (self *ModBag) AddItem(itemId int, player *Player) {
 	default: // 同普通物品
 		fmt.Println("普通物品: ", itemConfig.ItemName)
 
-		self.AddItemToBag(itemId, 1)
+		self.AddItemToBag(itemId, num)
 	}
 }
 
@@ -71,7 +71,7 @@ func (self *ModBag) RemoveItem(itemId int, num int64, player *Player) {
 	case csvs.ITEMTYPE_NORMAL:
 		fmt.Println("普通物品:", itemConfig.ItemName)
 
-		self.RemoveItemToBag(itemId, num)
+		self.RemoveItemToBag(itemId, num, player)
 	default:
 		//self.RemoveItemToBag(itemId, 1)
 	}
@@ -90,7 +90,7 @@ func (self *ModBag) RemoveItemToBagGM(itemId int, num int64) {
 	}
 }
 
-func (self *ModBag) RemoveItemToBag(itemId int, num int64) {
+func (self *ModBag) RemoveItemToBag(itemId int, num int64, player *Player) {
 
 	_, ok := self.BagInfo[itemId]
 

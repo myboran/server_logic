@@ -26,7 +26,7 @@ func GetManageBanWord() *ManageBanWord {
 func (self *ManageBanWord) IsBanWord(txt string) bool {
 	for _, v := range self.BanWordBase {
 		match, _ := regexp.MatchString(v, txt)
-		fmt.Println(match, "---", v)
+
 		if match {
 			return match
 		}
@@ -34,7 +34,7 @@ func (self *ManageBanWord) IsBanWord(txt string) bool {
 
 	for _, v := range self.BanWordExtra {
 		match, _ := regexp.MatchString(v, txt)
-		fmt.Println(match, "---", v)
+
 		if match {
 			return match
 		}
@@ -50,7 +50,7 @@ func (self *ManageBanWord) Run() {
 	for {
 		select {
 		case <-ticker.C:
-			if time.Now().Unix()%100 == 0 {
+			if time.Now().Unix()%777 == 0 {
 				fmt.Println("更新词库")
 			}
 		}

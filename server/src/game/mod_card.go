@@ -43,5 +43,15 @@ func (self *ModCard) AddItem(cardId int, friendliness int) {
 	self.CardInfo[cardId] = &Card{
 		CardId: cardId,
 	}
-	fmt.Println("获得名片: ", cardId)
+	item := csvs.GetItemConfig(cardId)
+	fmt.Println("获得名片: ", item.ItemName)
+}
+
+func (self *ModCard) CheckGetCard(roleId int, friendliness int) {
+	config := csvs.GetCardConfigByRoleId(roleId)
+	if config == nil {
+		fmt.Println("没找到名片")
+		return
+	}
+	self.AddItem(config.CardId, friendliness)
 }

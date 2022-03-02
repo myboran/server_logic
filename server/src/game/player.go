@@ -3,6 +3,7 @@ package game
 import (
 	"fmt"
 	"server_logic/server/src/csvs"
+	"strconv"
 	"time"
 )
 
@@ -39,6 +40,7 @@ func NewTestPlayer() *Player {
 	player.ModPlayer = new(ModPlayer)
 	player.ModPlayer.PlayerLevel = 1 // 初始等级为 1 级
 	player.ModPlayer.WorldLevel = 1
+	player.ModPlayer.Name = "旅行者"
 	player.ModPlayer.WorldLevelNow = 1
 	player.ModPlayer.WorldLevelCool = time.Now().Unix()
 	// *******************************
@@ -103,13 +105,184 @@ func (self *Player) SetHideShowTeam(isHide int) {
 
 func (self *Player) Run() {
 
-	ticker := time.NewTicker(time.Second * 1)
-
+	// 监听动作
 	for {
-		select {
-		case <-ticker.C:
-			fmt.Println(time.Now().Unix())
+		fmt.Println("---------------------------------------------------------------")
+		fmt.Println(self.ModPlayer.Name, ",欢迎来到提瓦特大陆,请选择功能： 1基础信息  2背包  3地图(未开放)")
+		var modChoose int
+		fmt.Scan(&modChoose)
+		switch modChoose {
+		case 1:
+			self.HandleBase()
+		case 2:
+			self.HandleBag()
+		case 3:
+			self.HandleMap()
 		}
-
 	}
+}
+
+func (self *Player) HandleBase() {
+	for {
+		fmt.Println("---------------------------------------------------------------")
+		fmt.Println("当前处于基础信息界面,请选择操作：0返回  1查询信息  2设置名字  3设置签名  4头像  5名片  6设置生日")
+		var action int
+		fmt.Scan(&action)
+		switch action {
+		case 0:
+			return
+		case 1:
+			self.HandleBaseGetInfo()
+		case 2:
+			self.HandleBagSetName()
+		case 3:
+			self.HandleBagSetSign()
+		case 4:
+			self.HandleBagSetIcon()
+		case 5:
+			self.HandleBagSetCard()
+		case 6:
+			self.HandleBagSetBirth()
+		}
+	}
+}
+
+func (self *Player) HandleBag() {
+	for {
+		fmt.Println("---------------------------------------------------------------")
+		fmt.Println("当前处于基础信息界面,请选择操作：0返回  1增加物品  2扣除物品  3查看物品")
+		var action int
+		fmt.Scan(&action)
+		switch action {
+		case 0:
+			return
+		case 1:
+			self.HandleBagAddItem()
+		case 2:
+			self.HandleBagRemoveItem()
+		case 3:
+			self.HandleBagShowItem()
+		}
+	}
+}
+
+func (self *Player) HandleMap() {
+	fmt.Println("---------------------------------------------------------------")
+	fmt.Println("向着星辰与深渊,欢迎来到冒险家协会！")
+	fmt.Println("当前位置:", "蒙德城")
+	fmt.Println("地图模块还没写到......")
+}
+
+func (self *Player) HandleBaseGetInfo() {
+	fmt.Println("---------------------------------------------------------------")
+	fmt.Println("名字:", self.ModPlayer.Name)
+	fmt.Println("等级:", self.ModPlayer.PlayerLevel)
+	fmt.Println("大世界等级:", self.ModPlayer.WorldLevelNow)
+	if self.ModPlayer.Sign == "" {
+		fmt.Println("签名:", "未设置")
+	} else {
+		fmt.Println("签名:", self.ModPlayer.Sign)
+	}
+
+	if self.ModPlayer.Icon == 0 {
+		fmt.Println("头像:", "未设置")
+	} else {
+		fmt.Println("头像:", csvs.GetItemConfig(self.ModPlayer.Icon))
+	}
+
+	if self.ModPlayer.Card == 0 {
+		fmt.Println("名片:", "未设置")
+	} else {
+		fmt.Println("名片:", csvs.GetItemConfig(self.ModPlayer.Card), self.ModPlayer.Card)
+	}
+
+	if self.ModPlayer.Birth == 0 {
+		fmt.Println("生日:", "未设置")
+	} else {
+		fmt.Println("生日:", self.ModPlayer.Birth/100, "月", self.ModPlayer.Birth%100, "日")
+	}
+}
+
+func (self *Player) HandleBagSetName() {
+	fmt.Println("---------------------------------------------------------------")
+	fmt.Println("请输入名字:")
+	var name string
+	fmt.Scan(&name)
+	self.RecvSetName(name)
+}
+func (self *Player) HandleBagSetSign() {
+	fmt.Println("---------------------------------------------------------------")
+	fmt.Println("请输入签名:")
+	var sign string
+	fmt.Scan(&sign)
+	self.RecvSetSign(sign)
+}
+func (self *Player) HandleBagSetIcon() {
+	fmt.Println("---------------------------------------------------------------")
+	fmt.Println("当前处于基础信息--头像界面,请选择操作：0返回  1查询头像背包  2设置头像")
+	var action int
+	fmt.Scan(&action)
+	switch action {
+	case 0:
+		return
+	case 1:
+		self.HandleBagSetIconGetInfo()
+	case 2:
+		self.HandleBagSetIconSet()
+	}
+}
+func (self *Player) HandleBagSetCard() {
+
+}
+func (self *Player) HandleBagSetBirth() {
+
+}
+
+func (self *Player) HandleBagSetIconGetInfo() {
+	fmt.Println("当前拥有头像如下:")
+	for _, v := range self.ModIcon.IconInfo {
+		config := csvs.GetItemConfig(v.Id)
+		if config != nil {
+			fmt.Println(config.ItemName, ":", config.ItemId)
+		}
+	}
+}
+
+func (self *Player) HandleBagSetIconSet() {
+
+	fmt.Println("请输入头像id:")
+	var icon int
+	fmt.Scan(&icon)
+	self.RecvSetIcon(icon)
+}
+
+func (self *Player) HandleBagAddItem() {
+	itemId := 0
+	itemNum := 0
+	fmt.Println("物品ID")
+	fmt.Scan(&itemId)
+	fmt.Println("物品数量")
+	fmt.Scan(&itemNum)
+	self.ModBag.AddItem(itemId, int64(itemNum), self)
+}
+
+func (self *Player) HandleBagShowItem() {
+
+	data := "您当前有:"
+	for _, v := range self.ModBag.BagInfo {
+		item := csvs.GetItemConfig(v.ItemId)
+		str := item.ItemName + ":" + strconv.Itoa(int(v.ItemNum)) + "个id为" + strconv.Itoa(v.ItemId) + "~"
+		data = data + str
+	}
+	fmt.Println(data)
+}
+
+func (self *Player) HandleBagRemoveItem() {
+	itemId := 0
+	itemNum := 0
+	fmt.Println("物品ID")
+	fmt.Scan(&itemId)
+	fmt.Println("物品数量")
+	fmt.Scan(&itemNum)
+	self.ModBag.RemoveItemToBag(itemId, int64(itemNum), self)
 }

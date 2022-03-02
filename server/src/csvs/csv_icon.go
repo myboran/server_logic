@@ -1,7 +1,6 @@
 package csvs
 
 import (
-	"fmt"
 	"server_logic/server/utils"
 )
 
@@ -18,11 +17,18 @@ var (
 func init() {
 	ConfigIconMap = make(map[int]*ConfigIcon)
 	utils.GetCsvUtilMgr().LoadCsv("Icon", &ConfigIconMap)
-
-	fmt.Println("csv_icon初始化")
+	ConfigIconMapByRoleId = make(map[int]*ConfigIcon)
+	for _, v := range ConfigIconMap {
+		ConfigIconMapByRoleId[v.Check] = v
+	}
+	return
 	return
 }
 
 func GetIconConfig(itemId int) *ConfigIcon {
 	return ConfigIconMap[itemId]
+}
+
+func GetIconConfigByRoleId(roleId int) *ConfigIcon {
+	return ConfigIconMapByRoleId[roleId]
 }

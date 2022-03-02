@@ -1,7 +1,6 @@
 package csvs
 
 import (
-	"fmt"
 	"server_logic/server/utils"
 )
 
@@ -20,14 +19,17 @@ func init() {
 
 	ConfigCardMap = make(map[int]*ConfigCard)
 	utils.GetCsvUtilMgr().LoadCsv("Card", &ConfigCardMap)
-
-	//for _, v := range ConfigCardMap {
-	//	ConfigCardMapByRoleId[v.Check] = v
-	//}
-	fmt.Println("csv_card初始化")
+	ConfigCardMapByRoleId = make(map[int]*ConfigCard)
+	for _, v := range ConfigCardMap {
+		ConfigCardMapByRoleId[v.Check] = v
+	}
 	return
 }
 
 func GetCardConfig(cardId int) *ConfigCard {
 	return ConfigCardMap[cardId]
+}
+
+func GetCardConfigByRoleId(roleId int) *ConfigCard {
+	return ConfigCardMapByRoleId[roleId]
 }
