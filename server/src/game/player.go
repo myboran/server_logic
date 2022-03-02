@@ -34,6 +34,7 @@ func NewTestPlayer() *Player {
 	player.ModUniqueTask.MyTaskInfo = make(map[int]*TaskInfo)
 	//player.ModUniqueTask.Locker = new(sync.RWMutex)
 	player.ModRole = new(ModRole)
+	player.ModRole.RoleInfo = make(map[int]*RoleInfo)
 	// *******************************
 	player.ModPlayer = new(ModPlayer)
 	player.ModPlayer.PlayerLevel = 1 // 初始等级为 1 级

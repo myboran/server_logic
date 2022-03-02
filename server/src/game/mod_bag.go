@@ -23,12 +23,14 @@ func (self *ModBag) AddItem(itemId int, player *Player) {
 	}
 
 	switch itemConfig.SortType {
-	case csvs.ITEMTYPE_NORMAL:
-		fmt.Println("普通物品: ", itemConfig.ItemName)
-
-		self.AddItemToBag(itemId, 1)
+	//case csvs.ITEMTYPE_NORMAL:
+	//	fmt.Println("普通物品: ", itemConfig.ItemName)
+	//
+	//	self.AddItemToBag(itemId, 1)
 	case csvs.ITEMTYPE_ROLE:
 		fmt.Println("角色: ", itemConfig.ItemName)
+
+		player.ModRole.AddItem(itemId, 1)
 	case csvs.ITEMTYPE_ICON:
 		fmt.Println("头像: ", itemConfig.ItemName)
 
@@ -38,7 +40,9 @@ func (self *ModBag) AddItem(itemId int, player *Player) {
 
 		player.ModCard.AddItem(itemId, 9)
 	default: // 同普通物品
-		//self.AddItemTpBag(itemId, 1)
+		fmt.Println("普通物品: ", itemConfig.ItemName)
+
+		self.AddItemToBag(itemId, 1)
 	}
 }
 
