@@ -12,6 +12,8 @@ const (
 	ItemTypeRelics   = 7
 	ItemTypeCookbook = 8
 	ItemTypeCook     = 9
+	ItemTypeFood     = 10
+	ItemTypeHomeItem = 11
 )
 
 type ConfigItem struct {

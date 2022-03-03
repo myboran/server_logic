@@ -23,10 +23,10 @@ func (self *ModBag) AddItem(itemId int, num int64, player *Player) {
 	}
 
 	switch itemConfig.SortType {
-	//case csvs.ITEMTYPE_NORMAL:
-	//	fmt.Println("普通物品: ", itemConfig.ItemName)
-	//
-	//	self.AddItemToBag(itemId, 1)
+	case csvs.ItemTypeNormal:
+		fmt.Println("普通物品: ", itemConfig.ItemName)
+
+		self.AddItemToBag(itemId, 1)
 	case csvs.ItemTypeRole:
 		fmt.Println("角色: ", itemConfig.ItemName)
 
@@ -51,10 +51,18 @@ func (self *ModBag) AddItem(itemId int, num int64, player *Player) {
 		fmt.Println("学习食谱: ", itemConfig.ItemName)
 
 		player.ModCook.addItem(itemId)
-	default: // 同普通物品
-		fmt.Println("普通物品: ", itemConfig.ItemName)
 
-		self.AddItemToBag(itemId, num)
+	case csvs.ItemTypeCookbook:
+		fmt.Println("获得食谱: ", itemConfig.ItemName)
+
+		self.AddItemToBag(itemId, 1)
+
+	case csvs.ItemTypeHomeItem:
+		fmt.Println("获得家具: ", itemConfig.ItemName)
+
+		player.ModHome.addItem(itemId, num, player)
+	default:
+		fmt.Println("无法识别此物品")
 	}
 }
 
@@ -81,10 +89,14 @@ func (self *ModBag) RemoveItem(itemId int, num int64, player *Player) {
 
 	switch itemConfig.SortType {
 	case csvs.ItemTypeNormal:
-		fmt.Println("普通物品:", itemConfig.ItemName)
+		fmt.Println("rm普通物品:", itemConfig.ItemName)
 
 		self.RemoveItemToBag(itemId, num, player)
+	case csvs.ItemTypeCookbook:
+		fmt.Println("rm食谱:", itemConfig.ItemName)
+		self.RemoveItemToBag(itemId, num, player)
 	default:
+
 		//self.RemoveItemToBag(itemId, 1)
 	}
 }
@@ -104,25 +116,21 @@ func (self *ModBag) RemoveItemToBagGM(itemId int, num int64) {
 
 func (self *ModBag) RemoveItemToBag(itemId int, num int64, player *Player) {
 
+	config := csvs.GetItemConfig(itemId)
+	if config == nil {
+		fmt.Println("没有此物品")
+		return
+	}
 	_, ok := self.BagInfo[itemId]
 
 	if ok {
 		if !self.HasEnoughItem(itemId, num) {
-			config := csvs.GetItemConfig(itemId)
-			if config != nil {
-				fmt.Println(config.ItemName, "数量不足, 当前数量: ", self.BagInfo[itemId].ItemNum)
-
-				return
-			}
-		}
-
-		self.BagInfo[itemId].ItemNum -= num
-		config := csvs.GetItemConfig(itemId)
-		if config != nil {
-			fmt.Println("减少物品:", config.ItemName, "数量:", num, "当前数量:", self.BagInfo[itemId].ItemNum)
-
+			fmt.Println(config.ItemName, "数量不足, 当前数量: ", self.BagInfo[itemId].ItemNum)
 			return
 		}
+		self.BagInfo[itemId].ItemNum -= num
+		fmt.Println("减少物品:", config.ItemName, "数量:", num, "当前数量:", self.BagInfo[itemId].ItemNum)
+		return
 	} else {
 		fmt.Println("没有该商品: ", itemId)
 
@@ -131,5 +139,49 @@ func (self *ModBag) RemoveItemToBag(itemId int, num int64, player *Player) {
 }
 
 func (self *ModBag) HasEnoughItem(itemId int, num int64) bool {
-	return self.BagInfo[itemId].ItemNum > num
+	return self.BagInfo[itemId].ItemNum >= num
+}
+
+func (self *ModBag) useItem(itemId int, num int64, player *Player) {
+	itemConfig := csvs.GetItemConfig(itemId)
+	if itemConfig == nil {
+		// 不存在的物品
+		fmt.Println("物品不存在 id: ", itemId)
+		return
+	}
+
+	_, ok := self.BagInfo[itemId]
+	if ok {
+		if !self.HasEnoughItem(itemId, num) {
+			fmt.Println(itemConfig.ItemName, "数量不足, 当前数量: ", self.BagInfo[itemId].ItemNum)
+
+			return
+		}
+	} else {
+		fmt.Println("没有该商品: ", itemId)
+
+		return
+	}
+
+	switch itemConfig.SortType {
+	case csvs.ItemTypeCookbook:
+		fmt.Println("使用食谱: ", csvs.GetItemConfig(itemId).ItemName)
+		self.useCookBook(itemId, num, player)
+	case csvs.ItemTypeFood:
+		fmt.Println("使用食物: ", csvs.GetItemConfig(itemId).ItemName)
+
+	default:
+		fmt.Println("此物品无法使用")
+	}
+}
+
+func (self *ModBag) useCookBook(itemId int, num int64, player *Player) {
+	cookBookConfig := csvs.GetCookBookInfo(itemId)
+	if cookBookConfig == nil {
+		fmt.Println("没有该物品")
+		return
+	}
+
+	self.RemoveItem(itemId, num, player)
+	player.ModCook.addItem(cookBookConfig.Reward)
 }

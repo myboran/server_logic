@@ -23,6 +23,7 @@ type Player struct {
 	ModWeapon     *ModWeapon
 	ModRelics     *ModRelics
 	ModCook       *ModCook
+	ModHome       *ModHome
 }
 
 func NewTestPlayer() *Player {
@@ -58,6 +59,9 @@ func NewTestPlayer() *Player {
 	// *******************************
 	player.ModCook = new(ModCook)
 	player.ModCook.CookInfo = make(map[int]*Cook)
+	// *
+	player.ModHome = new(ModHome)
+	player.ModHome.HomeItemIdInfo = make(map[int]*HomeItem)
 	return player
 }
 
@@ -166,18 +170,20 @@ func (self *Player) HandleBase() {
 func (self *Player) HandleBag() {
 	for {
 		fmt.Println("---------------------------------------------------------------")
-		fmt.Println("当前处于基础信息界面,请选择操作：0返回  1增加物品  2扣除物品  3查看物品")
+		fmt.Println("当前处于基础信息界面,请选择操作：0返回  1查看物品  2增加物品  3扣除物品 4使用物品")
 		var action int
 		fmt.Scan(&action)
 		switch action {
 		case 0:
 			return
 		case 1:
-			self.HandleBagAddItem()
-		case 2:
-			self.HandleBagRemoveItem()
-		case 3:
 			self.HandleBagShowItem()
+		case 2:
+			self.HandleBagAddItem()
+		case 3:
+			self.HandleBagRemoveItem()
+		case 4:
+			self.HandleBagUseItem()
 		}
 	}
 }
@@ -333,4 +339,14 @@ func (self *Player) HandleBagRemoveItem() {
 	fmt.Println("物品数量")
 	fmt.Scan(&itemNum)
 	self.ModBag.RemoveItemToBag(itemId, int64(itemNum), self)
+}
+
+func (self *Player) HandleBagUseItem() {
+	itemId := 0
+	itemNum := 0
+	fmt.Println("物品ID")
+	fmt.Scan(&itemId)
+	fmt.Println("物品数量")
+	fmt.Scan(&itemNum)
+	self.ModBag.useItem(itemId, int64(itemNum), self)
 }
