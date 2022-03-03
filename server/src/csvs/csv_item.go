@@ -8,7 +8,10 @@ const (
 	ItemTypeIcon   = 3
 	ItemTypeCard   = 4
 
-	ItemTypeWeapon = 6
+	ItemTypeWeapon   = 6
+	ItemTypeRelics   = 7
+	ItemTypeCookbook = 8
+	ItemTypeCook     = 9
 )
 
 type ConfigItem struct {

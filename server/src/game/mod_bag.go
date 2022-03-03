@@ -43,7 +43,14 @@ func (self *ModBag) AddItem(itemId int, num int64, player *Player) {
 		fmt.Println("武器: ", itemConfig.ItemName)
 
 		player.ModWeapon.addItem(itemId, num)
+	case csvs.ItemTypeRelics:
+		fmt.Println("圣遗物: ", itemConfig.ItemName)
 
+		player.ModRelics.addItem(itemId, num)
+	case csvs.ItemTypeCook:
+		fmt.Println("学习食谱: ", itemConfig.ItemName)
+
+		player.ModCook.addItem(itemId)
 	default: // 同普通物品
 		fmt.Println("普通物品: ", itemConfig.ItemName)
 

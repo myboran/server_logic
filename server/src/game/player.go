@@ -21,6 +21,8 @@ type Player struct {
 	ModRole       *ModRole
 	ModBag        *ModBag
 	ModWeapon     *ModWeapon
+	ModRelics     *ModRelics
+	ModCook       *ModCook
 }
 
 func NewTestPlayer() *Player {
@@ -50,6 +52,12 @@ func NewTestPlayer() *Player {
 	// *******************************
 	player.ModWeapon = new(ModWeapon)
 	player.ModWeapon.WeaponInfo = make(map[int]*Weapon)
+	// *******************************
+	player.ModRelics = new(ModRelics)
+	player.ModRelics.RelicsInfo = make(map[int]*Relics)
+	// *******************************
+	player.ModCook = new(ModCook)
+	player.ModCook.CookInfo = make(map[int]*Cook)
 	return player
 }
 
@@ -108,8 +116,11 @@ func (self *Player) SetHideShowTeam(isHide int) {
 }
 
 func (self *Player) Run() {
+	fmt.Println("---------------------------------------------------------------")
 	fmt.Println("个人学习作品: MYBORAN")
 	fmt.Println("学习来源:B站 golang大海葵")
+	fmt.Println("---------------------------------------------------------------")
+	fmt.Println("---------------------------------------------------------------")
 	// 监听动作
 	for {
 		fmt.Println("---------------------------------------------------------------")
